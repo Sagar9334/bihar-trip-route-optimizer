@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Destination | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 45px 20px;
+            color: #0f172a;
+        }
+        .container { max-width: 1150px; margin: 0 auto; text-align: center; }
+        .header h2 { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+        .header p { color: #64748b; font-size: 15px; margin-bottom: 25px; }
+        .user-tag {
+            color: #2563eb;
+            font-weight: 700;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+        .circuits-banner { margin-bottom: 40px; }
+        .btn-circuits {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.35);
+            transition: all 0.25s ease;
+        }
+        .btn-circuits:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 25px -5px rgba(37, 99, 235, 0.45);
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 24px;
+            text-align: left;
+        }
+        .dest-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            transition: all 0.25s ease;
+        }
+        .dest-card:hover {
+            transform: translateY(-5px);
+            border-color: #cbd5e1;
+            box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1);
+        }
+        .circuit-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #dbeafe;
+        }
+        .dest-card h4 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+        .dest-card p { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 24px; }
+        .btn-calc {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .dest-card:hover .btn-calc {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 45px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 20px;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+        .btn-back:hover { background: #f1f5f9; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Welcome, {{ name }} 👋</h2>
+            <p>Calculated Origin: <span class="user-tag">{{ location }}</span></p>
+        </div>
+
+        <div class="circuits-banner">
+            <a href="/circuits?source={{ location }}" class="btn-circuits">🗺 Explore 5 Curated Multi-Stop Circuits</a>
+        </div>
+
+        <div class="card-container">
+            {% for dest in destinations %}
+            <div class="dest-card">
+                <div>
+                    {% if dest['circuit'] %}
+                    <span class="circuit-badge">{{ dest['circuit'] }}</span>
+                    {% endif %}
+                    <h4>{{ dest['name'] }}</h4>
+                    <p>{{ dest['description'] }}</p>
+                </div>
+                <a href="/select_budget?source={{ location }}&dest={{ dest['name'] }}" class="btn-calc">Calculate Route ➔</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="/" class="btn-back">← Reset Journey</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Summary | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 45px 20px;
+            color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .ticket-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        .ticket-header {
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .ticket-header h2 { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+        .tier-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #dbeafe;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .ticket-body { padding: 28px 24px; }
+        .section-label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 14px; }
+        
+        .route-node { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+        .node-circle { width: 12px; height: 12px; border-radius: 50%; background: #2563eb; margin-top: 5px; flex-shrink: 0; }
+        .node-info strong { color: #0f172a; display: block; font-size: 15px; }
+        .node-info span { color: #64748b; font-size: 13px; }
+
+        .divider { border-top: 1px dashed #cbd5e1; margin: 22px 0; }
+        .cost-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #64748b; }
+        .cost-row strong { color: #0f172a; }
+        
+        .grand-total {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .grand-total span { font-weight: 700; font-size: 15px; color: #166534; }
+        .grand-total h3 { font-size: 26px; color: #16a34a; font-weight: 800; }
+        
+        .btn-home {
+            color: #475569;
+            background: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .btn-home:hover { background: #f1f5f9; color: #0f172a; }
+    </style>
+</head>
+<body>
+
+    {% if best_path %}
+        {% if budget == 'Low' %} {% set food_cost, hotel_cost = dest_info['low_food'], dest_info['low_hotel'] %}
+        {% elif budget == 'Medium' %} {% set food_cost, hotel_cost = dest_info['med_food'], dest_info['med_hotel'] %}
+        {% else %} {% set food_cost, hotel_cost = dest_info['high_food'], dest_info['high_hotel'] %} {% endif %}
+
+        <div class="ticket-box">
+            <div class="ticket-header">
+                <h2>{{ source.split(',')[0] }} ➔ {{ dest }}</h2>
+                <span class="tier-badge">{{ budget }} Budget Package</span>
+            </div>
+            
+            <div class="ticket-body">
+                <div class="section-label">Optimized Transit Path (Dijkstra)</div>
+                <div class="route-node">
+                    <div class="node-circle"></div>
+                    <div class="node-info">
+                        <strong>Origin: {{ source }}</strong>
+                    </div>
+                </div>
+
+                {% for step in best_path['path'] %}
+                <div class="route-node">
+                    <div class="node-circle" style="background: #16a34a;"></div>
+                    <div class="node-info">
+                        <strong>Transit: {{ step['node'] }}</strong>
+                        <span>Via {{ step['mode'] }} (₹{{ step['cost'] }})</span>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="divider"></div>
+
+                <div class="section-label">Cost Distribution (Per Diem)</div>
+                <div class="cost-row">
+                    <span>Travel / Transit Fare</span>
+                    <strong>₹{{ best_path['total_travel_cost'] }}</strong>
+                </div>
+                <div class="cost-row">
+                    <span>Food & Dining Estimate</span>
+                    <strong>₹{{ food_cost }}</strong>
+                </div>
+                <div class="cost-row">
+                    <span>Hotel / Lodging Stay</span>
+                    <strong>₹{{ hotel_cost }}</strong>
+                </div>
+
+                <div class="grand-total">
+                    <span>Total Estimated Cost</span>
+                    <h3>₹{{ best_path['total_travel_cost'] + food_cost + hotel_cost }}</h3>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <a href="/trips" class="btn-home">← Plan Another Route</a>
+
+</body>
+</html>

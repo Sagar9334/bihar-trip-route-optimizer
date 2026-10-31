@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Circuit Budget | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h2 { font-size: 30px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+        .sub { color: #64748b; margin-bottom: 25px; font-size: 15px; }
+        .origin-highlight { color: #2563eb; font-weight: 700; }
+        
+        .circuit-summary {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 22px;
+            border-radius: 16px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+        }
+        .circuit-summary h3 { font-size: 19px; color: #0f172a; margin-bottom: 6px; }
+        .route-line { font-size: 14px; color: #2563eb; font-weight: 700; }
+
+        .budget-grid { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+        .budget-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 30px 22px;
+            width: 260px;
+            text-decoration: none;
+            color: #0f172a;
+            transition: 0.25s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            text-align: left;
+        }
+        .budget-card:hover { transform: translateY(-5px); box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1); }
+        .budget-card.low { border-top: 4px solid #16a34a; }
+        .budget-card.med { border-top: 4px solid #2563eb; }
+        .budget-card.high { border-top: 4px solid #d97706; }
+        
+        .budget-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .budget-card.low h3 { color: #16a34a; }
+        .budget-card.med h3 { color: #2563eb; }
+        .budget-card.high h3 { color: #d97706; }
+        .budget-card p { font-size: 13px; color: #64748b; line-height: 1.6; }
+        .tier-label {
+            font-size: 11px;
+            margin-top: 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 40px;
+            color: #64748b;
+            background: #ffffff;
+            text-decoration: none;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-back:hover { background: #f1f5f9; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Circuit Budget Tier</h2>
+        <p class="sub">Traveling From: <span class="origin-highlight">{{ source }}</span></p>
+
+        <div class="circuit-summary">
+            <h3>{{ circuit.title }}</h3>
+            <div class="route-line">📍 {{ circuit.route | join(" ➔ ") }}</div>
+        </div>
+
+        <div class="budget-grid">
+            <a href="/calculate_circuit?circuit_id={{ circuit.id }}&budget=Low&source={{ source }}" class="budget-card low">
+                <div>
+                    <h3>🎒 Low Budget</h3>
+                    <p>Sleeper Train/Bus to Patna gateway, budget homestays, local autos, and standard food.</p>
+                </div>
+                <span class="tier-label">Economy Tier</span>
+            </a>
+
+            <a href="/calculate_circuit?circuit_id={{ circuit.id }}&budget=Medium&source={{ source }}" class="budget-card med">
+                <div>
+                    <h3>🏨 Medium Budget</h3>
+                    <p>3AC Superfast Train to Patna, comfortable 3-star hotels, AC buses/cabs, and restaurants.</p>
+                </div>
+                <span class="tier-label">Comfort Tier</span>
+            </a>
+
+            <a href="/calculate_circuit?circuit_id={{ circuit.id }}&budget=High&source={{ source }}" class="budget-card high">
+                <div>
+                    <h3>👑 High Budget</h3>
+                    <p>Direct flight/express transit to Patna airport, premium resorts, dedicated cabs, and fine dining.</p>
+                </div>
+                <span class="tier-label">Luxury Tier</span>
+            </a>
+        </div>
+
+        <a href="/circuits?source={{ source }}" class="btn-back">← Back to Circuits</a>
+    </div>
+</body>
+</html>

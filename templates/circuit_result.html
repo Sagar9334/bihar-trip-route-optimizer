@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Detailed Itinerary | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            padding: 45px 20px;
+        }
+        .container { max-width: 920px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 30px; color: #0f172a; font-weight: 800; letter-spacing: -0.5px; }
+        .header p { color: #64748b; font-size: 15px; margin-top: 5px; }
+        
+        .section-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 26px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+        }
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .leg-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .leg-route { color: #0f172a; font-weight: 700; }
+        .leg-mode { color: #2563eb; font-size: 13px; font-weight: 600; margin-left: 6px; }
+        .leg-cost { color: #16a34a; font-weight: 800; font-size: 15px; }
+
+        .stop-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 14px; }
+        .stop-table th { text-align: left; padding: 10px; color: #64748b; font-size: 12px; text-transform: uppercase; font-weight: 700; border-bottom: 1px solid #e2e8f0; }
+        .stop-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+
+        .total-card {
+            background: #ffffff;
+            border: 1.5px solid #bbf7d0;
+            border-radius: 18px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1);
+        }
+        .total-box h4 { font-size: 12px; color: #64748b; margin-bottom: 4px; text-transform: uppercase; font-weight: 700; }
+        .total-box div { font-size: 20px; font-weight: 700; color: #0f172a; }
+        .grand-total { font-size: 28px !important; color: #16a34a !important; font-weight: 800 !important; }
+
+        .nav-actions { text-align: center; margin-top: 35px; }
+        .btn-nav {
+            color: #64748b;
+            background: #ffffff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+            margin: 0 6px;
+        }
+        .btn-nav:hover { background: #f1f5f9; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ circuit.title }}</h1>
+            <p>Budget Tier: <strong>{{ budget }} Tier</strong> | Duration: <strong>{{ circuit.days }}</strong></p>
+        </div>
+
+        <!-- 1. SEQUENTIAL TRAVEL COST -->
+        <div class="section-box">
+            <div class="section-title">🚌 Step-by-Step Travel Route & Transit Cost</div>
+            {% for leg in legs %}
+            <div class="leg-item">
+                <div>
+                    <span class="leg-route">Leg {{ loop.index }}: {{ leg.from }} ➔ {{ leg.to }}</span>
+                    <span class="leg-mode">({{ leg.mode }})</span>
+                </div>
+                <div class="leg-cost">₹{{ leg.cost }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 2. HOTEL & FOOD COST BREAKDOWN -->
+        <div class="section-box">
+            <div class="section-title">🏨 Stay & Food Cost at Each Destination</div>
+            <table class="stop-table">
+                <thead>
+                    <tr>
+                        <th>Destination</th>
+                        <th>Food / Day</th>
+                        <th>Hotel Stay</th>
+                        <th>Total at Stop</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stop in stops_breakdown %}
+                    <tr>
+                        <td><strong>📍 {{ stop.name }}</strong></td>
+                        <td>₹{{ stop.food_cost }}</td>
+                        <td>₹{{ stop.hotel_cost }}</td>
+                        <td style="color: #16a34a; font-weight: 700;">₹{{ stop.total_stop }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. GRAND TOTAL SUMMARY -->
+        <div class="total-card">
+            <div class="total-box">
+                <h4>Total Transit</h4>
+                <div>₹{{ total_travel_cost }}</div>
+            </div>
+            <div class="total-box">
+                <h4>Total Food</h4>
+                <div>₹{{ total_food_cost }}</div>
+            </div>
+            <div class="total-box">
+                <h4>Total Lodging</h4>
+                <div>₹{{ total_hotel_cost }}</div>
+            </div>
+            <div class="total-box">
+                <h4>Estimated Grand Total</h4>
+                <div class="grand-total">₹{{ grand_total }}</div>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <a href="/circuits?source={{ source }}" class="btn-nav">← Back to Circuits</a>
+            <a href="/trips" class="btn-nav">All Destinations</a>
+        </div>
+    </div>
+</body>
+</html>

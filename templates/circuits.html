@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bihar Tour Circuits | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            padding: 45px 20px;
+        }
+        .container { max-width: 1150px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 35px; }
+        .header h1 {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .header p { color: #64748b; font-size: 15px; margin-bottom: 12px; }
+        .origin-badge {
+            display: inline-block;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .circuit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 25px; }
+        .circuit-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            transition: all 0.25s ease;
+        }
+        .circuit-card:hover {
+            transform: translateY(-5px);
+            border-color: #cbd5e1;
+            box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .circuit-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #0f172a; }
+        .duration { font-size: 13px; color: #d97706; margin-bottom: 14px; font-weight: 700; }
+        .route-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .route-box span { color: #2563eb; font-weight: 700; }
+        .highlights { font-size: 13px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
+        .btn-select {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 8px 18px -4px rgba(37, 99, 235, 0.3);
+            transition: 0.25s;
+        }
+        .btn-select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px -4px rgba(37, 99, 235, 0.45);
+        }
+        .nav-back { text-align: center; margin-top: 40px; }
+        .btn-back {
+            color: #64748b;
+            background: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .btn-back:hover { background: #f1f5f9; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Bihar Multi-Stop Tour Circuits</h1>
+            <p>Theme-based route plans with transit vectors, lodging, and meals included</p>
+            <div class="origin-badge">📍 Traveling from: {{ source }}</div>
+        </div>
+
+        <div class="circuit-grid">
+            {% for circuit in circuits %}
+            <div class="circuit-card">
+                <div>
+                    <span class="badge">{{ circuit.tag }}</span>
+                    <h3>{{ circuit.title }}</h3>
+                    <div class="duration">⏱ Duration: {{ circuit.days }}</div>
+                    
+                    <div class="route-box">
+                        📍 <span>Route:</span> {{ circuit.route | join(" ➔ ") }}
+                    </div>
+                    
+                    <div class="highlights">
+                        <strong>Highlights:</strong> {{ circuit.highlights }}
+                    </div>
+                </div>
+
+                <a href="/select_circuit_budget?circuit_id={{ circuit.id }}&source={{ source }}" class="btn-select">Plan Full Circuit ➔</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="nav-back">
+            <a href="javascript:history.back()" class="btn-back">← Back to Destinations</a>
+        </div>
+    </div>
+</body>
+</html>

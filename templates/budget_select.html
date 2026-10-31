@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Budget | Explore Bihar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 50px 20px;
+            color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container { max-width: 950px; width: 100%; text-align: center; }
+        h2 { font-size: 30px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+        .route-sub { color: #2563eb; font-size: 16px; font-weight: 600; margin-bottom: 40px; }
+        .budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .budget-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            transition: all 0.25s ease;
+        }
+        .budget-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1);
+        }
+        .low { border-top: 4px solid #16a34a; }
+        .med { border-top: 4px solid #2563eb; }
+        .high { border-top: 4px solid #d97706; }
+        .budget-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+        .low h3 { color: #16a34a; } .med h3 { color: #2563eb; } .high h3 { color: #d97706; }
+        .budget-card p { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 30px; }
+        .btn-budget {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-low { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
+        .btn-low:hover { background: #16a34a; color: #ffffff; }
+        .btn-med { background: #eff6ff; color: #2563eb; border: 1.5px solid #bfdbfe; }
+        .btn-med:hover { background: #2563eb; color: #ffffff; }
+        .btn-high { background: #fffbeb; color: #d97706; border: 1.5px solid #fde68a; }
+        .btn-high:hover { background: #d97706; color: #ffffff; }
+        .btn-back { display: inline-block; margin-top: 40px; color: #64748b; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .btn-back:hover { color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Transit Tier</h2>
+        <div class="route-sub">{{ source }} ➔ {{ dest }}</div>
+
+        <div class="budget-grid">
+            <div class="budget-card low">
+                <div>
+                    <h3>🎒 Low Budget</h3>
+                    <p>Sleeper Class Trains, Non-AC Bus connections, and budget backpacker stays.</p>
+                </div>
+                <a href="/calculate?source={{ source }}&dest={{ dest }}&budget=Low" class="btn-budget btn-low">Choose Economy</a>
+            </div>
+
+            <div class="budget-card med">
+                <div>
+                    <h3>🏨 Medium Budget</h3>
+                    <p>3AC Express Trains, Intercity AC Coaches, and certified 3-Star comfort hotels.</p>
+                </div>
+                <a href="/calculate?source={{ source }}&dest={{ dest }}&budget=Medium" class="btn-budget btn-med">Choose Standard</a>
+            </div>
+
+            <div class="budget-card high">
+                <div>
+                    <h3>👑 High Budget</h3>
+                    <p>Direct Flight / Executive Transit, Private dedicated Cab, and Luxury 4/5-Star stays.</p>
+                </div>
+                <a href="/calculate?source={{ source }}&dest={{ dest }}&budget=High" class="btn-budget btn-high">Choose Luxury</a>
+            </div>
+        </div>
+
+        <a href="javascript:history.back()" class="btn-back">← Back to Destinations</a>
+    </div>
+</body>
+</html>
